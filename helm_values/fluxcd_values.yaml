@@ -1,0 +1,7 @@
+---
+git:
+  url: https://$(GIT_AUTHUSER):$(GIT_AUTHKEY)@github.com/gkaskonas/home-k8s.git
+helm:
+  versions: v3
+env:
+  secretName: flux-git-auth

@@ -1,0 +1,8 @@
+---
+mongodb:
+  mongodbPassword: changeme
+  mongodbRootPassword: changeme
+image:
+  repository: docker.io/rocketchat/rocket.chat
+  tag: 2.4.9
+replicaCount: 2

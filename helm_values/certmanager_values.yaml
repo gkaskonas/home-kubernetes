@@ -1,0 +1,12 @@
+---
+image:
+  tag: v0.14.2
+replicaCount: 2
+webhook:
+  replicaCount: 2
+  image:
+    tag: v0.14.2
+cainjector:
+  replicaCount: 2
+  image:
+    tag: v0.14.2

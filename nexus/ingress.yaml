@@ -1,0 +1,34 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nexus-ingress
+  namespace: nexus
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # Encrypt using the ClusterIssuer deployed while setting up Cert-Manager
+    nginx.ingress.kubernetes.io/proxy-body-size:  "50m" # Increase the size of the maximum allowed size of the client request body
+spec:
+  tls:
+  - hosts:
+    # CHANGE ME
+    - docker.onprem.toastedbuns.co.uk
+    - nexus.onprem.toastedbuns.co.uk
+    secretName: nexus-tls
+  rules:
+  # CHANGE ME
+  - host: nexus.onprem.toastedbuns.co.uk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nexus-service
+          servicePort: 80
+  # CHANGE ME
+  - host: docker.onprem.toastedbuns.co.uk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nexus-service
+          servicePort: 5000

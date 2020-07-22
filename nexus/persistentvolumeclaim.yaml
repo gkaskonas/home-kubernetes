@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-pvc
+  namespace: nexus
+  labels:
+    app: nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # CHANGE ME
+      storage: 1Gi
