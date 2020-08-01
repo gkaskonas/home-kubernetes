@@ -30,10 +30,10 @@ jobs:
       - run:
           name: install helm
           command: |
-          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | sh
-          helm repo add stable https://kubernetes-charts.storage.googleapis.com
-          helm repo add jetstack https://charts.jetstack.io
-          helm repo update
+            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | sh
+            helm repo add stable https://kubernetes-charts.storage.googleapis.com
+            helm repo add jetstack https://charts.jetstack.io
+            helm repo update
       - run:
           name: install metallb
           command: helm upgrade metallb stable/metallb --namespace kube-system \
