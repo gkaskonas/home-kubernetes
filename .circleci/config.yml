@@ -6,9 +6,9 @@ jobs:
     working_directory: /tmp/workspace/kubernetes
     steps:
       - checkout
-      - run
-        name: test
-        command: ls
+      - run:
+          name: test
+          command: ls
       - run:
           name: Validate kubernetes manifests
           command: kubeval /tmp/workspace/kubernetes/nexus/*
