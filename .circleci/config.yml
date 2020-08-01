@@ -14,16 +14,16 @@ jobs:
           command: kubeval -d /tmp/workspace/kubernetes/nexus/
   deploy:
     docker:
-      - image: alpine:latest
+      - image: lwolf/helm-kubectl-docker:latest
     environment:
       KUBECONFIG: ~/.kube/config
     steps:
       - checkout
-      - run:
-          command: apk --no-cache add curl
-      - run:
-          name: install kubectl
-          command: curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+      # - run:
+      #     command: apk --no-cache add curl
+      # - run:
+      #     name: install kubectl
+      #     command: curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
       - run:
           name: set up kubeconfig
           command: |
