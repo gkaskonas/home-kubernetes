@@ -14,7 +14,7 @@ jobs:
           command: kubeval -d /tmp/workspace/kubernetes/nexus/
   deploy:
     docker:
-      - image: lwolf/helm-kubectl-docker:latest
+      - image: devth/helm:latest
     environment:
       KUBECONFIG: ~/.kube/config
     steps:
