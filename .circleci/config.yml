@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Validate kubernetes manifests
-          command: kubeval nexus/
+          command: kubeval home-kubernetes/nexus
 workflows:
   version: 2.1
   validate:
