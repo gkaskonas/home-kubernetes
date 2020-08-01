@@ -11,7 +11,7 @@ jobs:
           command: ls
       - run:
           name: Validate kubernetes manifests
-          command: kubeval /tmp/workspace/kubernetes/nexus/*
+          command: kubeval /tmp/workspace/kubernetes/*
 workflows:
   version: 2.1
   validate:
