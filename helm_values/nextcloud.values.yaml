@@ -63,7 +63,7 @@ lifecycle: {}
 nextcloud:
   host: nextcloud.DOMAIN_TEMPLATE
   username: admin
-  password: "!VkxLrC!gv64wy"
+  password: "NEXTCLOUD_PASSWORD"
   update: 0
   datadir: /var/www/html/data
   tableprefix:

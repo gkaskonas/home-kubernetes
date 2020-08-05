@@ -11,13 +11,13 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "transmission.toastedbuns.co.uk" # Host to access transmission
+    - "transmission.DOMAIN_TEMPLATE" # Host to access transmission
     secretName: "transmission-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
   rules:
-  - host: "transmission.toastedbuns.co.uk" # Host to access transmission
+  - host: "transmission.DOMAIN_TEMPLATE" # Host to access transmission
     http:
       paths:
-        - path: /  # We will access transmission via the URL https://transmission.toastedbuns.co.uk/
+        - path: /  # We will access transmission via the URL https://transmission.DOMAIN_TEMPLATE/
           backend:
             serviceName: "transmission-transmission-openvpn" # Mapping to the service (see kubectl get services -n transmission)
             servicePort: 80 # Mapping to the port (see kubectl get services -n transmission)

@@ -47,28 +47,49 @@ jobs:
           name: install metallb
           command: |
             helm upgrade metallb stable/metallb --namespace kube-system --set configInline.address-pools[0].name=default --set configInline.address-pools[0].protocol=layer2 --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250  --install 
-            sleep 30s
+            sleep 10s
       - run:
           name: install nginx
           command: |
             helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --set defaultBackend.enabled=false --install
-            sleep 30s
+            sleep 10s
       # - run:
       #     name: install cert-manager
       #     command: |
       #       kubectl apply -f cert-manager/namespace.yaml
       #       kubectl apply -f cert-manager/
       #       helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
-      #       sleep 30s
+      #       sleep 10s
       - run:
           name: install nextcloud
           command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/ingress.yaml
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/nextcloud.values.yaml
+            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' helm_values/nextcloud.values.yaml
             kubectl apply -f nextcloud/namespace.yaml
             kubectl apply -f nextcloud/
             helm upgrade nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml --install
-            sleep 30s
+            sleep 10s
+      - run:
+          name: install kubernetes-dashboard
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' kubernetes-dashboard/ingress.yaml
+          command: kubectl apply -f kubernetes-dashboard/ -n kubernetes-dashboard
+      - run:
+          name: install transmission
+          command: |
+            sed -i 's/NORDVPN_PASSWORD/'$NORDVPN_PASSWORD'/g' transmission/nordvpn-creds.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' transmission/ingress.yaml
+            kubectl apply -f transmission/namespace.yaml
+            kubectl apply -f transmission/ -n namespace
+            helm upgrade transmission bananaspliff/transmission-openvpn --values helm_values/transmission-openvpn.values.yml --namespace transmission --install
+            sleep 10s
+      - run:
+          name: install emby
+          command: |
+            kubectl apply -f emby/namespace.yaml -n emby
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' emby/ingress.yaml
+            kubectl apply -f emby/ -n emby
+
 workflows:
   version: 2.1
   validate:
