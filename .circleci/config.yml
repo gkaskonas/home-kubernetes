@@ -80,7 +80,7 @@ jobs:
             sed -i 's/NORDVPN_PASSWORD/'$NORDVPN_PASSWORD'/g' transmission/nordvpn-creds.yaml
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' transmission/ingress.yaml
             kubectl apply -f transmission/namespace.yaml
-            kubectl apply -f transmission/ -n namespace
+            kubectl apply -f transmission/ -n transmission
             helm upgrade transmission bananaspliff/transmission-openvpn --values helm_values/transmission-openvpn.values.yml --namespace transmission --install
             sleep 10s
       - run:
