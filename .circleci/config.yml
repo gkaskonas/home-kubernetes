@@ -67,7 +67,7 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/nextcloud.values.yaml
             kubectl apply -f nextcloud/namespace.yaml
             kubectl apply -f nextcloud/
-            helm install nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml
+            helm upgrade nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml --install
             sleep 30s
 workflows:
   version: 2.1
