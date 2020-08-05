@@ -16,7 +16,7 @@ jobs:
     docker:
       - image: devth/helm:latest
     environment:
-      KUBECONFIG: ~/.kube/config
+      KUBECONFIG: /kubeconfig
     steps:
       - checkout
       # - run:
@@ -27,9 +27,7 @@ jobs:
       - run:
           name: set up kubeconfig
           command: |
-            mkdir ~/.kube/
-            echo $KUBECONFIG_FILE | base64 -d >> ~/.kube/config
-            cat ~/.kube/config
+            echo $KUBECONFIG_FILE | base64 -d >> /kubeconfig
       - run:
           name: set up helm
           command: |
