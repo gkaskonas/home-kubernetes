@@ -53,8 +53,8 @@ jobs:
       - run:
           name: install cert-manager
           command: |
-            kubectl apply -f /tmp/workspace/kubernetes/cert-manager/namespace.yaml
-            kubectl apply -f /tmp/workspace/kubernetes/cert-manager/
+            kubectl apply -f cert-manager/namespace.yaml
+            kubectl apply -f cert-manager/
             helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
 
 workflows:
