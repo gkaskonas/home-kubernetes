@@ -1,0 +1,22 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: emby-ingress
+  namespace: emby
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # Encrypt using the ClusterIssuer deployed while setting up Cert-Manager
+    nginx.ingress.kubernetes.io/proxy-body-size:  "50m" # Increase the size of the maximum allowed size of the client request body
+spec:
+  tls:
+  - hosts:
+    - emby.toastedbuns.co.uk
+    secretName: emby-prod-tls
+  rules:
+    - host: emby.toastedbuns.co.uk
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: emby-server
+              servicePort: 8096
