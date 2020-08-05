@@ -62,7 +62,7 @@ workflows:
   validate:
     jobs:
       - validate
-      - deploy-kubernetes
+      - deploy-kubernetes:
           requires:
             - validate
           filters:
