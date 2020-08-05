@@ -86,8 +86,8 @@ spec:
               mountPath: "/new_shows"
           resources:
             requests:
-              memory: 1Gi
-              cpu: 0.5
-            limits:
               memory: 2Gi
               cpu: 1
+            limits:
+              memory: 3Gi
+              cpu: 1.5
