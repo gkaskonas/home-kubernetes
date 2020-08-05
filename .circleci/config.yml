@@ -12,6 +12,15 @@ jobs:
       - run:
           name: Validate kubernetes manifests
           command: kubeval -d /tmp/workspace/kubernetes/nexus/
+      - run:
+          name: Validate kubernetes manifests
+          command: kubeval -d /tmp/workspace/kubernetes/emby/
+      - run:
+          name: Validate kubernetes manifests
+          command: kubeval -d /tmp/workspace/kubernetes/kubernetes-dashboard/
+      - run:
+          name: Validate kubernetes manifests
+          command: kubeval -d /tmp/workspace/kubernetes/nexus/
   deploy:
     docker:
       - image: devth/helm:latest
@@ -36,18 +45,27 @@ jobs:
             helm repo update
       - run:
           name: install metallb
-          command: |
-             helm upgrade metallb stable/metallb --namespace kube-system
-             --set configInline.address-pools[0].name=default 
-             --set configInline.address-pools[0].protocol=layer2 
-             --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250 
-             --install
+          command:
+             helm upgrade metallb stable/metallb --namespace kube-system --set configInline.address-pools[0].name=default --set configInline.address-pools[0].protocol=layer2 --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250  --install 
       - run:
           name: install nginx
           command: helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --set defaultBackend.enabled=false --install
+      - run:
+          name: install cert-manager
+          command: |
+            kubectl apply -f /tmp/workspace/kubernetes/cert-manager/namespace.yaml
+            kubectl apply -f /tmp/workspace/kubernetes/cert-manager/
+            helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
+
 workflows:
   version: 2.1
   validate:
     jobs:
       - validate
-      - deploy
+      - deploy-kubernetes
+        requires:
+          - validate
+        filters:
+          branches:
+            only: master
+      
