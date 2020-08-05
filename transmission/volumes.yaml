@@ -1,0 +1,30 @@
+# media.persistentvolume.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "transmission"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "50Gi"
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hdd2/transmission"
+# media.persistentvolumeclaim.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "transmission"
+  name: "transmission"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "50Gi"

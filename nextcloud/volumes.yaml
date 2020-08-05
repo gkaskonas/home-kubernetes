@@ -1,0 +1,30 @@
+# nextcloud.persistentvolume.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "nextcloud-ssd"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "1000Gi"
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd2/nextcloud"
+# nextcloud.persistentvolumeclaim.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "nextcloud"
+  name: "nextcloud-ssd"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "1000Gi"

@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: music
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd1/Music"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: shows
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 400Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd1/Shows"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: movies
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 550Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd1/Movies"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: config
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd1/Config"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: audiobooks
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd1/Audiobooks"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: new-shows
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd2/Shows"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: emby
+  name: new-movies
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd2/Movies"

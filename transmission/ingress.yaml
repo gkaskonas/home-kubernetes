@@ -1,0 +1,24 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: "transmission" # Same namespace as the deployment
+  name: "transmission-ingress" # Name of the ingress (see kubectl get ingress -A)
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # Encrypt using the ClusterIssuer deployed while setting up Cert-Manager
+    nginx.ingress.kubernetes.io/proxy-body-size:  "50m" # Increase the size of the maximum allowed size of the client request body
+spec:
+  tls:
+  - hosts:
+    - "transmission.toastedbuns.co.uk" # Host to access transmission
+    secretName: "transmission-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
+  rules:
+  - host: "transmission.toastedbuns.co.uk" # Host to access transmission
+    http:
+      paths:
+        - path: /  # We will access transmission via the URL https://transmission.toastedbuns.co.uk/
+          backend:
+            serviceName: "transmission-transmission-openvpn" # Mapping to the service (see kubectl get services -n transmission)
+            servicePort: 80 # Mapping to the port (see kubectl get services -n transmission)
+---
