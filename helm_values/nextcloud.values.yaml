@@ -61,7 +61,7 @@ lifecycle: {}
   # preStopCommand: []
 
 nextcloud:
-  host: nextcloud.toastedbuns.co.uk
+  host: nextcloud.DOMAIN_TEMPLATE
   username: admin
   password: "!VkxLrC!gv64wy"
   update: 0
@@ -214,13 +214,13 @@ mariadb:
   db:
     name: nextcloud
     user: nextcloud
-    password: "3f3x%e9Dj6&cuR"
+    password: "nextcloud"
 
   ## Enable persistence using Persistent Volume Claims
   ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
   ##
   persistence:
-    enabled: true
+    enabled: false
     accessMode: ReadWriteOnce
     size: 8Gi
 
@@ -232,7 +232,7 @@ redis:
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#cron-jobs
 ##
 cronjob:
-  enabled: true
+  enabled: false
   # Nexcloud image is used as default but only curl is needed
   image: {}
     # repository: nextcloud

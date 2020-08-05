@@ -6,21 +6,21 @@ jobs:
     working_directory: /tmp/workspace/kubernetes
     steps:
       - checkout
+      # - run:
+      #     name: Validate cert-manager manifests
+      #     command: kubeval -d /tmp/workspace/kubernetes/cert-manager/
       - run:
-          name: test
-          command: ls
-      - run:
-          name: Validate kubernetes manifests
-          command: kubeval -d /tmp/workspace/kubernetes/nexus/
-      - run:
-          name: Validate kubernetes manifests
+          name: Validate emby manifests
           command: kubeval -d /tmp/workspace/kubernetes/emby/
       - run:
-          name: Validate kubernetes manifests
+          name: Validate kubernetes-dashborad manifests
           command: kubeval -d /tmp/workspace/kubernetes/kubernetes-dashboard/
       - run:
-          name: Validate kubernetes manifests
+          name: Validate nexus manifests
           command: kubeval -d /tmp/workspace/kubernetes/nexus/
+      - run:
+          name: Validate nextcloud manifests
+          command: kubeval -d /tmp/workspace/kubernetes/nextcloud/
   deploy-kubernetes:
     docker:
       - image: devth/helm:latest
@@ -56,6 +56,14 @@ jobs:
             kubectl apply -f cert-manager/namespace.yaml
             kubectl apply -f cert-manager/
             helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
+      - run:
+          name: install nextcloud
+          command: |
+            sed -i 's/DOMAIN_TEMPLATE/$DOMAIN/g' nextcloud/ingress.yaml
+            sed -i 's/DOMAIN_TEMPLATE/$DOMAIN/g' helm_values/nextcloud.values.yaml
+            kubectl apply -f nextcloud/namespace.yaml
+            kubectl apply -f nextcloud/
+            helm install nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml
 
 workflows:
   version: 2.1

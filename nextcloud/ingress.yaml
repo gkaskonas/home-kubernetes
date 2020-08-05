@@ -11,13 +11,13 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "nextcloud.toastedbuns.co.uk" # Host to access nextcloud
+    - "DOMAIN_TEMPLATE" # Host to access nextcloud
     secretName: "nextcloud-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
   rules:
-  - host: "nextcloud.toastedbuns.co.uk" # Host to access nextcloud
+  - host: "DOMAIN_TEMPLATE" # Host to access nextcloud
     http:
       paths:
-        - path: /  # We will access NextCloud via the URL https://nextcloud.toastedbuns.co.uk/
+        - path: / 
           backend:
             serviceName: "nextcloud" # Mapping to the service (see kubectl get services -n nextcloud)
             servicePort: 8080 # Mapping to the port (see kubectl get services -n nextcloud)
