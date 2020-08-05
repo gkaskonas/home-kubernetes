@@ -27,6 +27,7 @@ jobs:
           command: |
             mkdir ~/.kube/
             echo $KUBECONFIG | base64 -d >> ~/.kube/config
+            cat ~/.kube/config
       - run:
           name: set up helm
           command: |
