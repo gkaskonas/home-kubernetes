@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Validate kubernetes manifests
           command: kubeval -d /tmp/workspace/kubernetes/nexus/
-  deploy:
+  deploy-kubernetes:
     docker:
       - image: devth/helm:latest
     environment:
