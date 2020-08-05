@@ -45,26 +45,30 @@ jobs:
             helm repo update
       - run:
           name: install metallb
-          command:
-             helm upgrade metallb stable/metallb --namespace kube-system --set configInline.address-pools[0].name=default --set configInline.address-pools[0].protocol=layer2 --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250  --install 
+          command: |
+            helm upgrade metallb stable/metallb --namespace kube-system --set configInline.address-pools[0].name=default --set configInline.address-pools[0].protocol=layer2 --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250  --install 
+            sleep 30s
       - run:
           name: install nginx
-          command: helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --set defaultBackend.enabled=false --install
+          command: |
+            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --set defaultBackend.enabled=false --install
+            sleep 30s
       - run:
           name: install cert-manager
           command: |
             kubectl apply -f cert-manager/namespace.yaml
             kubectl apply -f cert-manager/
             helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
+            sleep 30s
       - run:
           name: install nextcloud
           command: |
-            sed -i 's/DOMAIN_TEMPLATE/$DOMAIN/g' nextcloud/ingress.yaml
-            sed -i 's/DOMAIN_TEMPLATE/$DOMAIN/g' helm_values/nextcloud.values.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/ingress.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/nextcloud.values.yaml
             kubectl apply -f nextcloud/namespace.yaml
             kubectl apply -f nextcloud/
             helm install nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml
-
+            sleep 30s
 workflows:
   version: 2.1
   validate:
