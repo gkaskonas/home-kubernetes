@@ -63,9 +63,9 @@ workflows:
     jobs:
       - validate
       - deploy-kubernetes
-        requires:
-          - validate
-        filters:
-          branches:
-            only: master
-      
+          requires:
+            - validate
+          filters:
+            branches:
+              only: master
+        
