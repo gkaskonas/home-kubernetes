@@ -53,13 +53,13 @@ jobs:
           command: |
             helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --set defaultBackend.enabled=false --install
             sleep 30s
-      - run:
-          name: install cert-manager
-          command: |
-            kubectl apply -f cert-manager/namespace.yaml
-            kubectl apply -f cert-manager/
-            helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
-            sleep 30s
+      # - run:
+      #     name: install cert-manager
+      #     command: |
+      #       kubectl apply -f cert-manager/namespace.yaml
+      #       kubectl apply -f cert-manager/
+      #       helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
+      #       sleep 30s
       - run:
           name: install nextcloud
           command: |
