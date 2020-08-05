@@ -15,8 +15,6 @@ jobs:
   deploy:
     docker:
       - image: devth/helm:latest
-    environment:
-      KUBECONFIG: ~/.kube/config
     steps:
       - checkout
       # - run:
