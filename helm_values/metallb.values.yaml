@@ -1,0 +1,21 @@
+# controller contains configuration specific to the MetalLB cluster
+# controller.
+controller:
+  image:
+    repository: metallb/controller
+    tag: v0.8.1
+    pullPolicy: IfNotPresent
+
+# speaker contains configuration specific to the MetalLB speaker
+# daemonset.
+speaker:
+  image:
+    repository: metallb/speaker
+    tag: v0.8.1
+    pullPolicy: IfNotPresent
+configInline:
+  address-pools:
+  - name: default 
+  address-pools:
+  - protocol: layer2
+    addresses: 192.168.0.240-192.168.0.250

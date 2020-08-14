@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  validate:
+  validate-kubernetes-manifests:
     docker:
       - image: garethr/kubeval
     working_directory: /tmp/workspace/kubernetes
@@ -21,6 +21,44 @@ jobs:
       - run:
           name: Validate nextcloud manifests
           command: kubeval -d /tmp/workspace/kubernetes/nextcloud/
+  validate-helm-manifests:
+    docker:
+      - image: devth/helm:latest
+    working_directory: /tmp/workspace/kubernetes
+    environment:
+      KUBECONFIG: /kubeconfig
+    steps:
+      - checkout
+      - run:
+          name: set up kubeconfig
+          command: |
+            echo $KUBECONFIG_FILE | base64 -d >> /kubeconfig
+      - run:
+          name: set up helm
+          command: |
+            helm repo add stable https://kubernetes-charts.storage.googleapis.com
+            helm repo add jetstack https://charts.jetstack.io
+            helm repo add bananaspliff https://bananaspliff.github.io/geek-charts
+            helm repo update
+      - run:
+          name: validate metallb
+          command: |
+            helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install --dry-run 
+      - run:
+          name: validate nginx
+          command: |
+            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install --dry-run
+            sleep 10s
+      - run:
+          name: validate nextcloud
+          command: |
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/ingress.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/nextcloud.values.yaml
+            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' helm_values/nextcloud.values.yaml
+            kubectl apply -f nextcloud/namespace.yaml
+            kubectl apply -f nextcloud/
+            helm upgrade nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml --install --dry-run
+            sleep 10s
   deploy-kubernetes:
     docker:
       - image: devth/helm:latest
@@ -47,19 +85,19 @@ jobs:
       - run:
           name: install metallb
           command: |
-            helm upgrade metallb stable/metallb --namespace kube-system --set configInline.address-pools[0].name=default --set configInline.address-pools[0].protocol=layer2 --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250  --install 
+            helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install
             sleep 10s
       - run:
           name: install nginx
           command: |
-            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --set defaultBackend.enabled=false --install
+            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install
             sleep 10s
       # - run:
       #     name: install cert-manager
       #     command: |
       #       kubectl apply -f cert-manager/namespace.yaml
       #       kubectl apply -f cert-manager/
-      #       helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --version 0.16.0
+      #       helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --values helm_values/cert-manager.yaml
       #       sleep 10s
       - run:
           name: install nextcloud
@@ -112,10 +150,12 @@ workflows:
   version: 2.1
   validate:
     jobs:
-      - validate
+      - validate-kubernetes-manifests
+      - validate-helm-manifests
       - deploy-kubernetes:
           requires:
-            - validate
+          - validate-kubernetes-manifests
+          - validate-helm-manifests
           filters:
             branches:
               only: master
