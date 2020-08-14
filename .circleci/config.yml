@@ -97,6 +97,15 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/ingress.yaml
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/deployment.yaml
             kubectl apply -f ghost/ -n ghost
+      - run:
+          name: install bitwarden
+          command: |
+            sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$NORDVPN_PASSWORD'/g' bitwarden/bitwarden.values.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' bitwarden/bitwarden.values.yaml
+            kubectl apply -f bitwarden/namespace.yaml
+            kubectl apply -f bitwarden/ -n bitwarden
+            helm upgrade bitwarden bitwarden/bitwarden-k8s --values helm_values/bitwarden.values.yaml --namespace bitwarden --install
+            sleep 10s
 workflows:
   version: 2.1
   validate:

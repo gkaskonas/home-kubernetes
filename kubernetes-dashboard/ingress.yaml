@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - pi.toastedbuns.co.uk
+    - pi.DOMAIN_TEMPLATE
     secretName: kubernetes-dashboard-prod-tls
   rules:
-    - host: pi.toastedbuns.co.uk
+    - host: pi.DOMAIN_TEMPLATE
       http:
         paths:
           - path: /

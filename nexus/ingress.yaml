@@ -12,12 +12,12 @@ spec:
   tls:
   - hosts:
     # CHANGE ME
-    - docker.onprem.toastedbuns.co.uk
-    - nexus.onprem.toastedbuns.co.uk
+    - docker.DOMAIN_TEMPLATE
+    - nexus.DOMAIN_TEMPLATE
     secretName: nexus-tls
   rules:
   # CHANGE ME
-  - host: nexus.onprem.toastedbuns.co.uk
+  - host: nexus.DOMAIN_TEMPLATE
     http:
       paths:
       - path: /
@@ -25,7 +25,7 @@ spec:
           serviceName: nexus-service
           servicePort: 80
   # CHANGE ME
-  - host: docker.onprem.toastedbuns.co.uk
+  - host: docker.DOMAIN_TEMPLATE
     http:
       paths:
       - path: /

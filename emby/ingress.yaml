@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - emby.toastedbuns.co.uk
+    - emby.DOMAIN_TEMPLATE
     secretName: emby-prod-tls
   rules:
-    - host: emby.toastedbuns.co.uk
+    - host: emby.DOMAIN_TEMPLATE
       http:
         paths:
           - path: /

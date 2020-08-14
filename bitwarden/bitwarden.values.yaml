@@ -12,8 +12,8 @@ image:
 env:
   SIGNUPS_ALLOWED: false  # Disable Sign Up form (invitation only)
   INVITATIONS_ALLOWED: false # Enable invitation
-  ADMIN_TOKEN: "46tPNYibtNPUB2UN8gE3p5At6vtsNJAeYvFrkRUWOj4K1OL28+59yKXLvpF2civ6" # Copy/Paste the result of the command `$ openssl rand -base64 48` (admin interface password)
-  DOMAIN: "https://bitwarden.toastedbuns.co.uk" # Domain used to access Bitwarden
+  ADMIN_TOKEN: "BITWARDEN_ADMIN_PASSWORD" # Copy/Paste the result of the command `$ openssl rand -base64 48` (admin interface password)
+  DOMAIN: "https://bitwarden.DOMAIN_TEMPLATE" # Domain used to access Bitwarden
   # SMTP_HOST: "smtp.gmail.com" # SMTP host (invitation)
   # SMTP_FROM: "no-reply@<domain.com>" # From email (invitation)
   # SMTP_PORT: 587 # SMTP Port (invitation)
@@ -36,11 +36,11 @@ ingress:
     cert-manager.io/cluster-issuer: "letsencrypt-prod" # Cluster Issuer configured with certmanager
   path: /
   hosts:
-    - bitwarden.toastedbuns.co.uk # Domain for Bitwarden
+    - bitwarden.DOMAIN_TEMPLATE # Domain for Bitwarden
   tls:
     - secretName: bitwarden-domain-com-tls 
       hosts:
-        - bitwarden.toastedbuns.co.uk # Domain for Bitwarden
+        - bitwarden.DOMAIN_TEMPLATE # Domain for Bitwarden
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
