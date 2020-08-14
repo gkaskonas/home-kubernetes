@@ -11,7 +11,7 @@ controller:
 speaker:
   image:
     repository: metallb/speaker
-    tag: v0.8.1
+    tag: v0.9.3
     pullPolicy: IfNotPresent
 configInline:
   address-pools:
