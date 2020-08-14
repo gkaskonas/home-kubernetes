@@ -106,7 +106,7 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/bitwarden.values.yaml
             kubectl apply -f bitwarden/namespace.yaml
             kubectl apply -f bitwarden/volumes.yaml
-            helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values ../../helm_values/bitwarden.values.yaml --namespace bitwarden --install
+            helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values helm_values/bitwarden.values.yaml --namespace bitwarden --install
             sleep 10s
 workflows:
   version: 2.1
