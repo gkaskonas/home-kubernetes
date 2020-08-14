@@ -156,16 +156,16 @@ jobs:
             kubectl apply -f bitwarden/volumes.yaml
             helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values helm_values/bitwarden.values.yaml --namespace bitwarden --install
             sleep 10s
-      - run:
-          name: install rocketchat
-          command: |
-            sed -i 's/MONGO_ROOT_PASSWORD/'$MONGO_ROOT_PASSWORD'/g' helm_values/rocketchat.values.yaml
-            sed -i 's/MONGO_PASSWORD/'$MONGO_PASSWORD'/g' helm_values/rocketchat.values.yaml
-            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/rocketchat.values.yaml
-            kubectl apply -f rocketchat/namespace.yaml
-            kubectl apply -f rocketchat/volumes.yaml
-            helm upgrade rocketchat stable/rocketchat --values helm_values/rocketchat.values.yaml --namespace rocketchat --install
-            sleep 10s
+      # - run:
+      #     name: install rocketchat
+      #     command: |
+      #       sed -i 's/MONGO_ROOT_PASSWORD/'$MONGO_ROOT_PASSWORD'/g' helm_values/rocketchat.values.yaml
+      #       sed -i 's/MONGO_PASSWORD/'$MONGO_PASSWORD'/g' helm_values/rocketchat.values.yaml
+      #       sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/rocketchat.values.yaml
+      #       kubectl apply -f rocketchat/namespace.yaml
+      #       kubectl apply -f rocketchat/volumes.yaml
+      #       helm upgrade rocketchat stable/rocketchat --values helm_values/rocketchat.values.yaml --namespace rocketchat --install
+      #       sleep 10s
 workflows:
   version: 2.1
   validate:
