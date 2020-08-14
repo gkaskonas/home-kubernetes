@@ -73,8 +73,9 @@ jobs:
             sleep 10s
       - run:
           name: install kubernetes-dashboard
+          command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' kubernetes-dashboard/ingress.yaml
-          command: kubectl apply -f kubernetes-dashboard/ -n kubernetes-dashboard
+            kubectl apply -f kubernetes-dashboard/ -n kubernetes-dashboard
       - run:
           name: install transmission
           command: |
