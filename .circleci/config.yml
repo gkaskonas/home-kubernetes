@@ -101,12 +101,12 @@ jobs:
       - run:
           name: install bitwarden
           command: |
+            git clone https://github.com/gjeanmart/bitwarden-k8s.git bitwarden/bitwarden-k8s
             sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$NORDVPN_PASSWORD'/g' helm_values/bitwarden.values.yaml
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/bitwarden.values.yaml
             kubectl apply -f bitwarden/namespace.yaml
             kubectl apply -f bitwarden/volumes.yaml
-            cd bitwarden/bitwarden-k8s
-            helm upgrade bitwarden . --values ../../helm_values/bitwarden.values.yaml --namespace bitwarden --install
+            helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values ../../helm_values/bitwarden.values.yaml --namespace bitwarden --install
             sleep 10s
 workflows:
   version: 2.1
