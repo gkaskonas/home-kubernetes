@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: bitwardenrs/server
-  tag: raspberry
+  tag: 1.16.3
   pullPolicy: IfNotPresent
 
 env:
