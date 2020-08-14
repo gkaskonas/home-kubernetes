@@ -1,0 +1,31 @@
+# rocketchat.persistentvolume.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rocketchat
+  namespace: rocketchat
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd2/rocketchat"
+# rocketchat.persistentvolumeclaim.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: rocketchat
+  name: rocketchat
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
