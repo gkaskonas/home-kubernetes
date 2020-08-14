@@ -1,0 +1,22 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: "ghost" # Same namespace as the deployment
+  name: "ghost-ingress" # Name of the ingress (see kubectl get ingress -A)
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # Encrypt using the ClusterIssuer deployed while setting up Cert-Manager
+spec:
+  tls:
+  - hosts:
+    - "blog.DOMAIN_TEMPLATE" # Host to access ghost
+    secretName: "ghost-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
+  rules:
+  - host: "blog.DOMAIN_TEMPLATE" # Host to access ghost
+    http:
+      paths:
+        - path: / 
+          backend:
+            serviceName: "ghost" # Mapping to the service (see kubectl get services -n ghost)
+            servicePort: 2368 # Mapping to the port (see kubectl get services -n ghost)

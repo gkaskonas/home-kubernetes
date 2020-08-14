@@ -90,7 +90,13 @@ jobs:
             kubectl apply -f emby/namespace.yaml -n emby
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' emby/ingress.yaml
             kubectl apply -f emby/ -n emby
-
+      - run:
+          name: install ghost
+          command: |
+            kubectl apply -f ghost/namespace.yaml -n ghost
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/ingress.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/deployment.yaml
+            kubectl apply -f ghost/ -n ghost
 workflows:
   version: 2.1
   validate:
