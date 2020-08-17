@@ -292,11 +292,11 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-   cpu: 1000m
-   memory: 1024Mi
+   cpu: 3000m
+   memory: 4096Mi
   requests:
-   cpu: 300m
-   memory: 512Mi
+   cpu: 2000m
+   memory: 2048Mi
 
 ## Liveness and readiness probe values
 ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
@@ -304,15 +304,15 @@ resources:
 livenessProbe:
   enabled: true
   initialDelaySeconds: 30
-  periodSeconds: 15
-  timeoutSeconds: 5
+  periodSeconds: 30
+  timeoutSeconds: 15
   failureThreshold: 3
   successThreshold: 1
 readinessProbe:
   enabled: true
   initialDelaySeconds: 30
-  periodSeconds: 15
-  timeoutSeconds: 5
+  periodSeconds: 30
+  timeoutSeconds: 15
   failureThreshold: 3
   successThreshold: 1
 
