@@ -9,43 +9,11 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 20Gi
+    storage: 100Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Music"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  namespace: emby
-  name: shows
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 400Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/hdd1/Shows"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  namespace: emby
-  name: movies
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 550Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/hdd1/Movies"
+    path: "/mnt/hdd2/Music"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -61,7 +29,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Config"
+    path: "/mnt/hdd2/Config"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -77,7 +45,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Audiobooks"
+    path: "/mnt/hdd2/Audiobooks"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -89,7 +57,7 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 500Gi
+    storage: 800Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -105,7 +73,7 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 500Gi
+    storage: 800Gi
   accessModes:
     - ReadWriteOnce
   hostPath:

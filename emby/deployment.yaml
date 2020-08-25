@@ -18,36 +18,30 @@ spec:
         app: emby
     spec:
       volumes:
-      - name: emby-music
-        persistentVolumeClaim:
-          claimName: music
-      - name: emby-config
-        persistentVolumeClaim:
-          claimName: config
-      - name: emby-shows
-        persistentVolumeClaim:
-          claimName: shows
-      - name: emby-movies
-        persistentVolumeClaim:
-          claimName: movies
-      - name: emby-audiobooks
-        persistentVolumeClaim:
-          claimName: audiobooks
-      - name: emby-new-movies
-        persistentVolumeClaim:
-          claimName: new-movies
-      - name: emby-new-shows
-        persistentVolumeClaim:
-          claimName: new-shows
+        - name: emby-music
+          persistentVolumeClaim:
+            claimName: music
+        - name: emby-config
+          persistentVolumeClaim:
+            claimName: config
+        - name: emby-audiobooks
+          persistentVolumeClaim:
+            claimName: audiobooks
+        - name: emby-new-movies
+          persistentVolumeClaim:
+            claimName: new-movies
+        - name: emby-new-shows
+          persistentVolumeClaim:
+            claimName: new-shows
       containers:
         - name: emby
-          image: emby/embyserver_arm64v8:4.5.0.20
+          image: emby/embyserver_arm64v8:4.5.0.21
           imagePullPolicy: Always
           env:
-          - name: UID
-            value: "1000"
-          - name: GID
-            value: "1000"
+            - name: UID
+              value: "1000"
+            - name: GID
+              value: "1000"
           ports:
             - name: http
               containerPort: 8096
@@ -65,29 +59,25 @@ spec:
             httpGet:
               path: /
               port: 8096
-            initialDelaySeconds: 120
+            initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             successThreshold: 1
-            failureThreshold: 2
+            failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /
               port: 8096
-            initialDelaySeconds: 120
+            initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             successThreshold: 1
-            failureThreshold: 2
+            failureThreshold: 30
           volumeMounts:
             - name: emby-config
               mountPath: "/config"
             - name: emby-music
               mountPath: "/music"
-            - name: emby-shows
-              mountPath: "/shows"
-            - name: emby-movies
-              mountPath: "/movies"
             - name: emby-audiobooks
               mountPath: "/audiobooks"
             - name: emby-new-movies
