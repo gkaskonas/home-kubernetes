@@ -76,8 +76,8 @@ jobs:
           command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/ingress.yaml
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/nextcloud.deployment.yaml
-            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' nextcloud/nextcloud.deployment.yaml
-            sed -i 's/REDIS_PASSWORD_CLIENT/'$REDIS_PASSWORD_CLIENT'/g' nextcloud/nextcloud.deployment.yaml
+            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' nextcloud/secrets.yaml
+            sed -i 's/REDIS_PASSWORD_CLIENT/'$REDIS_PASSWORD_CLIENT'/g' nextcloud/secrets.yaml
             kubectl apply -f nextcloud/namespace.yaml
             kubectl apply -f nextcloud/
             sleep 10s

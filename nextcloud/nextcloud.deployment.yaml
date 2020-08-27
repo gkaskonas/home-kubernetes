@@ -4,11 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nextcloud
-  labels:
-    app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-1.12.0
-    app.kubernetes.io/instance: nextcloud
-    app.kubernetes.io/managed-by: Helm
+  namespace: nextcloud
 spec:
   replicas: 1
   strategy:
@@ -130,21 +126,3 @@ spec:
       # Will mount configuration files as www-data (id: 33) for nextcloud
       securityContext:
         fsGroup: 33
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: redis-password
-  namespace: nextcloud
-data:
-  REDIS_PASSWORD: REDIS_PASSWORD_CLIENT
----
-apiVersion: v1
-data:
-  nextcloud-password: NEXTCLOUD_PASSWORD
-  nextcloud-username: YWRtaW4=
-kind: Secret
-metadata:
-  name: nextcloud
-  namespace: nextcloud
-type: Opaque
