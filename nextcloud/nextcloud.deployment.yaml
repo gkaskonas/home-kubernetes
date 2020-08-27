@@ -1,0 +1,150 @@
+---
+# Source: nextcloud/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+  labels:
+    app.kubernetes.io/name: nextcloud
+    helm.sh/chart: nextcloud-1.12.0
+    app.kubernetes.io/instance: nextcloud
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nextcloud
+      app.kubernetes.io/instance: nextcloud
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nextcloud
+        app.kubernetes.io/instance: nextcloud
+        nextcloud-redis-client: "true"
+    spec:
+      containers:
+        - name: nextcloud
+          image: "nextcloud:19.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_HOST
+              value: "mysql.mysql.svc.cluster.local:3306"
+            - name: MYSQL_DATABASE
+              value: "nextcloud"
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud-db
+                  key: db-username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud-db
+                  key: db-password
+            - name: NEXTCLOUD_TRUSTED_DOMAINS
+              value: DOMAIN_TEMPLATE
+            - name: NEXTCLOUD_DATA_DIR
+              value: "/var/www/html/data"
+            - name: NEXTCLOUD_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud
+                  key: nextcloud-username
+            - name: NEXTCLOUD_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud
+                  key: nextcloud-password
+            - name: REDIS_HOST
+              value: redis.redis.svc.cluster.local
+            - name: REDIS_HOST_PORT
+              value: "6379"
+            - name: REDIS_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-password
+                  key:
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /status.php
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: "nextcloud.toastedbuns.co.uk"
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /status.php
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: "nextcloud.toastedbuns.co.uk"
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4096Mi
+            requests:
+              cpu: "1"
+              memory: 2048Mi
+          volumeMounts:
+            - name: nextcloud-data
+              mountPath: /var/www/
+              subPath: root
+            - name: nextcloud-data
+              mountPath: /var/www/html
+              subPath: html
+            - name: nextcloud-data
+              mountPath: /var/www/html/data
+              subPath: data
+            - name: nextcloud-data
+              mountPath: /var/www/html/config
+              subPath: config
+            - name: nextcloud-data
+              mountPath: /var/www/html/custom_apps
+              subPath: custom_apps
+            - name: nextcloud-data
+              mountPath: /var/www/tmp
+              subPath: tmp
+            - name: nextcloud-data
+              mountPath: /var/www/html/themes
+              subPath: themes
+      volumes:
+        - name: nextcloud-data
+          persistentVolumeClaim:
+            claimName: nextcloud-ssd
+      # Will mount configuration files as www-data (id: 33) for nextcloud
+      securityContext:
+        fsGroup: 33
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-password
+  namespace: nextcloud
+data:
+  REDIS_PASSWORD: REDIS_PASSWORD_CLIENT
+---
+apiVersion: v1
+data:
+  nextcloud-password: NEXTCLOUD_PASSWORD
+  nextcloud-username: YWRtaW4=
+kind: Secret
+metadata:
+  name: nextcloud
+  namespace: nextcloud
+type: Opaque

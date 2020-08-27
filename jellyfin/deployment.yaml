@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin-server
+  labels:
+    app: jellyfin
+  namespace: jellyfin
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      volumes:
+        - name: jellyfin-music
+          persistentVolumeClaim:
+            claimName: jellyfin-music
+        - name: jellyfin-config
+          persistentVolumeClaim:
+            claimName: config
+        # - name: jellyfin-shows
+        #   persistentVolumeClaim:
+        #     claimName: jellyfin-shows
+        # - name: jellyfin-movies
+        #   persistentVolumeClaim:
+        #     claimName: jellyfin-movies
+        # - name: jellyfin-audiobooks
+        #   persistentVolumeClaim:
+        #     claimName: audiobooks
+        # - name: jellyfin-new-movies
+        #   persistentVolumeClaim:
+        #     claimName: new-movies
+        # - name: jellyfin-new-shows
+        #   persistentVolumeClaim:
+        #     claimName: new-shows
+      containers:
+        - name: jellyfin
+          image: docker.io/jellyfin/jellyfin
+          imagePullPolicy: Always
+          env:
+            - name: UID
+              value: "1000"
+            - name: GID
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 8096
+              protocol: TCP
+            - name: https
+              containerPort: 8920
+              protocol: TCP
+            - name: someudp
+              containerPort: 7359
+              protocol: UDP
+            - name: someotherudp
+              containerPort: 1900
+              protocol: UDP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8096
+          #   initialDelaySeconds: 120
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   successThreshold: 1
+          #   failureThreshold: 2
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8096
+          #   initialDelaySeconds: 120
+          #   periodSeconds: 10
+          #   timeoutSeconds: 5
+          #   successThreshold: 1
+          #   failureThreshold: 2
+          volumeMounts:
+            - name: jellyfin-config
+              mountPath: "/config"
+            - name: jellyfin-music
+              mountPath: "/music"
+            # - name: jellyfin-shows
+            #   mountPath: "/shows"
+            # - name: jellyfin-movies
+            #   mountPath: "/movies"
+            # - name: jellyfin-audiobooks
+            #   mountPath: "/audiobooks"
+            # - name: jellyfin-new-movies
+            #   mountPath: "/new_movies"
+            # - name: jellyfin-new-shows
+            #   mountPath: "/new_shows"

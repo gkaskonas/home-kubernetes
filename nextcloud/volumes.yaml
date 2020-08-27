@@ -28,3 +28,34 @@ spec:
   resources:
     requests:
       storage: "1000Gi"
+
+# nextcloud.persistentvolume.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "nextcloud-cron"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "100Gi"
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hdd2/nextcloud"
+# nextcloud.persistentvolumeclaim.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "nextcloud"
+  name: "nextcloud-cron"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "100Gi"

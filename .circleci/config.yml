@@ -21,44 +21,6 @@ jobs:
       - run:
           name: Validate nextcloud manifests
           command: kubeval -d /tmp/workspace/kubernetes/nextcloud/
-  validate-helm-manifests:
-    docker:
-      - image: devth/helm:latest
-    working_directory: /tmp/workspace/kubernetes
-    environment:
-      KUBECONFIG: /kubeconfig
-    steps:
-      - checkout
-      - run:
-          name: set up kubeconfig
-          command: |
-            echo $KUBECONFIG_FILE | base64 -d >> /kubeconfig
-      - run:
-          name: set up helm
-          command: |
-            helm repo add stable https://kubernetes-charts.storage.googleapis.com
-            helm repo add jetstack https://charts.jetstack.io
-            helm repo add bananaspliff https://bananaspliff.github.io/geek-charts
-            helm repo update
-      - run:
-          name: validate metallb
-          command: |
-            helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install --dry-run 
-      - run:
-          name: validate nginx
-          command: |
-            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install --dry-run
-            sleep 10s
-      - run:
-          name: validate nextcloud
-          command: |
-            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/ingress.yaml
-            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/nextcloud.values.yaml
-            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' helm_values/nextcloud.values.yaml
-            kubectl apply -f nextcloud/namespace.yaml
-            kubectl apply -f nextcloud/
-            helm upgrade nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml --install --dry-run
-            sleep 10s
   deploy-kubernetes:
     docker:
       - image: devth/helm:latest
@@ -92,16 +54,16 @@ jobs:
       #       kubectl apply -f rocketchat/volumes.yaml
       #       helm upgrade rocketchat stable/rocketchat --values helm_values/rocketchat.values.yaml --namespace rocketchat --install
       #       sleep 10s
-      - run:
-          name: install metallb
-          command: |
-            helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install
-            sleep 10s
-      - run:
-          name: install nginx
-          command: |
-            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install
-            sleep 10s
+      # - run:
+      #     name: install metallb
+      #     command: |
+      #       helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install
+      #       sleep 10s
+      # - run:
+      #     name: install nginx
+      #     command: |
+      #       helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install
+      #       sleep 10s
       # - run:
       #     name: install cert-manager
       #     command: |
@@ -113,11 +75,23 @@ jobs:
           name: install nextcloud
           command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/ingress.yaml
-            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/nextcloud.values.yaml
-            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' helm_values/nextcloud.values.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nextcloud/nextcloud.deployment.yaml
+            sed -i 's/NEXTCLOUD_PASSWORD/'$NEXTCLOUD_PASSWORD'/g' nextcloud/nextcloud.deployment.yaml
+            sed -i 's/REDIS_PASSWORD_CLIENT/'$REDIS_PASSWORD_CLIENT'/g' nextcloud/nextcloud.deployment.yaml
             kubectl apply -f nextcloud/namespace.yaml
             kubectl apply -f nextcloud/
-            helm upgrade nextcloud stable/nextcloud --namespace nextcloud --values helm_values/nextcloud.values.yaml --install
+            sleep 10s
+      - run:
+          name: install redis
+          command: |
+            sed -i 's/REDIS_CONFIG/'$REDIS_CONFIG'/g' redis/redis.yaml
+            kubectl apply -f redis/
+            sleep 10s
+      - run:
+          name: install mysql
+          command: |
+            sed -i 's/MYSQL_ROOT_PASSWORD/'$MYSQL_ROOT_PASSWORD'/g' mariadb/mysql.yaml
+            kubectl apply -f redis/
             sleep 10s
       - run:
           name: install kubernetes-dashboard
@@ -171,12 +145,9 @@ workflows:
   validate:
     jobs:
       - validate-kubernetes-manifests
-      - validate-helm-manifests
       - deploy-kubernetes:
           requires:
-          - validate-kubernetes-manifests
-          - validate-helm-manifests
+            - validate-kubernetes-manifests
           filters:
             branches:
               only: master
-        
