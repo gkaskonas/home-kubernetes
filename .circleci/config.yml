@@ -59,11 +59,11 @@ jobs:
       #     command: |
       #       helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install
       #       sleep 10s
-      # - run:
-      #     name: install nginx
-      #     command: |
-      #       helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install
-      #       sleep 10s
+      - run:
+          name: install nginx
+          command: |
+            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install
+            sleep 10s
       # - run:
       #     name: install cert-manager
       #     command: |
@@ -98,15 +98,15 @@ jobs:
           command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' kubernetes-dashboard/ingress.yaml
             kubectl apply -f kubernetes-dashboard/ -n kubernetes-dashboard
-      - run:
-          name: install transmission
-          command: |
-            sed -i 's/NORDVPN_PASSWORD/'$NORDVPN_PASSWORD'/g' transmission/nordvpn-creds.yaml
-            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' transmission/ingress.yaml
-            kubectl apply -f transmission/namespace.yaml
-            kubectl apply -f transmission/ -n transmission
-            helm upgrade transmission bananaspliff/transmission-openvpn --values helm_values/transmission-openvpn.values.yaml --namespace transmission --install
-            sleep 10s
+      # - run:
+      #     name: install transmission
+      #     command: |
+      #       sed -i 's/NORDVPN_PASSWORD/'$NORDVPN_PASSWORD'/g' transmission/nordvpn-creds.yaml
+      #       sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' transmission/ingress.yaml
+      #       kubectl apply -f transmission/namespace.yaml
+      #       kubectl apply -f transmission/ -n transmission
+      #       helm upgrade transmission bananaspliff/transmission-openvpn --values helm_values/transmission-openvpn.values.yaml --namespace transmission --install
+      #       sleep 10s
       - run:
           name: install emby
           command: |
@@ -120,16 +120,16 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/ingress.yaml
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/deployment.yaml
             kubectl apply -f ghost/ -n ghost
-      - run:
-          name: install bitwarden
-          command: |
-            git clone https://github.com/gjeanmart/bitwarden-k8s.git bitwarden/bitwarden-k8s
-            sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$BITWARDEN_ADMIN_PASSWORD'/g' helm_values/bitwarden.values.yaml
-            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/bitwarden.values.yaml
-            kubectl apply -f bitwarden/namespace.yaml
-            kubectl apply -f bitwarden/volumes.yaml
-            helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values helm_values/bitwarden.values.yaml --namespace bitwarden --install
-            sleep 10s
+      # - run:
+      #     name: install bitwarden
+      #     command: |
+      #       git clone https://github.com/gjeanmart/bitwarden-k8s.git bitwarden/bitwarden-k8s
+      #       sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$BITWARDEN_ADMIN_PASSWORD'/g' helm_values/bitwarden.values.yaml
+      #       sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/bitwarden.values.yaml
+      #       kubectl apply -f bitwarden/namespace.yaml
+      #       kubectl apply -f bitwarden/volumes.yaml
+      #       helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values helm_values/bitwarden.values.yaml --namespace bitwarden --install
+      #       sleep 10s
       # - run:
       #     name: install rocketchat
       #     command: |
