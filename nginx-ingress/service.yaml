@@ -10,6 +10,7 @@ metadata:
     heritage: Helm
     release: nginx-ingress
   name: nginx-ingress-controller
+  namespace: kube-system
 spec:
   ports:
     - name: http
