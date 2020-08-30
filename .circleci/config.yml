@@ -54,16 +54,16 @@ jobs:
       #       kubectl apply -f rocketchat/volumes.yaml
       #       helm upgrade rocketchat stable/rocketchat --values helm_values/rocketchat.values.yaml --namespace rocketchat --install
       #       sleep 10s
-      # - run:
-      #     name: install metallb
-      #     command: |
-      #       helm upgrade metallb stable/metallb --namespace kube-system --values helm_values/metallb.values.yaml --install
-      #       sleep 10s
       - run:
-          name: install nginx
+          name: install metallb
           command: |
-            helm upgrade nginx-ingress stable/nginx-ingress --namespace kube-system --values helm_values/nginx.values.yaml --install
-            sleep 10s
+            kubectl apply -f metallb/namespace.yaml
+            kubectl apply -f metallb/
+      - run:
+          name: install nginx-ingress
+          command: |
+            kubectl apply -f nginx-ingress/namespace.yaml
+            kubectl apply -f nginx-ingress/
       # - run:
       #     name: install cert-manager
       #     command: |
