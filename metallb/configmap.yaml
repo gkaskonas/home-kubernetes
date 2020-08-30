@@ -4,6 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: metallb
+  namespace: kube-system
   labels:
     heritage: "Helm"
     release: "metallb"

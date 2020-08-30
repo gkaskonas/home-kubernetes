@@ -10,7 +10,7 @@ metadata:
     release: nginx-ingress
     app.kubernetes.io/component: controller
   name: nginx-ingress-controller
-  annotations: {}
+  namespace: kube-system
 spec:
   selector:
     matchLabels:
