@@ -35,7 +35,7 @@ spec:
             claimName: new-shows
       containers:
         - name: emby
-          image: emby/embyserver_arm64v8:4.5.0.21
+          image: emby/embyserver_arm64v8:4.5.0.22
           imagePullPolicy: Always
           env:
             - name: UID
