@@ -42,27 +42,15 @@ jobs:
           command: kubeval -d /tmp/workspace/kubernetes/bitwarden/
   deploy-kubernetes:
     docker:
-      - image: devth/helm:latest
+      - image: rancher/kubectl:v1.18.6
     environment:
       KUBECONFIG: /kubeconfig
     steps:
       - checkout
-      # - run:
-      #     command: apk --no-cache add curl
-      # - run:
-      #     name: install kubectl
-      #     command: curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
       - run:
           name: set up kubeconfig
           command: |
             echo $KUBECONFIG_FILE | base64 -d >> /kubeconfig
-      # - run:
-      #     name: set up helm
-      #     command: |
-      #       helm repo add stable https://kubernetes-charts.storage.googleapis.com
-      #       helm repo add jetstack https://charts.jetstack.io
-      #       helm repo add bananaspliff https://bananaspliff.github.io/geek-charts
-      #       helm repo update
       - run:
           name: install metallb
           command: |
@@ -133,16 +121,6 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' bitwarden/deployment.yaml
             kubectl apply -f bitwarden/namespace.yaml
             kubectl apply -f bitwarden/ -n bitwarden
-      # - run:
-      #     name: install rocketchat
-      #     command: |
-      #       sed -i 's/MONGO_ROOT_PASSWORD/'$MONGO_ROOT_PASSWORD'/g' helm_values/rocketchat.values.yaml
-      #       sed -i 's/MONGO_PASSWORD/'$MONGO_PASSWORD'/g' helm_values/rocketchat.values.yaml
-      #       sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/rocketchat.values.yaml
-      #       kubectl apply -f rocketchat/namespace.yaml
-      #       kubectl apply -f rocketchat/volumes.yaml
-      #       helm upgrade rocketchat stable/rocketchat --values helm_values/rocketchat.values.yaml --namespace rocketchat --install
-      #       sleep 10s
 workflows:
   version: 2.1
   validate:
