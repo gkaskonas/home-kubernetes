@@ -103,7 +103,7 @@ jobs:
       - run:
           name: install mysql
           command: |
-            sed -i 's/MYSQL_ROOT_PASSWORD/'$MYSQL_ROOT_PASSWORD'/g' mariadb/mysql.yaml
+            sed -i 's/SQL_ROOT_PASSWORD/'$SQL_ROOT_PASSWORD'/g' mariadb/secret.yaml
             kubectl apply -f mariadb/
             sleep 10s
       - run:
