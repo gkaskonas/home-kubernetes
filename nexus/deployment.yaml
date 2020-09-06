@@ -15,7 +15,7 @@ spec:
         app: nexus
     spec:
       containers:
-        - image: sonatype/nexus3:3.22.1
+        - image: sonatype/nexus3:3.27.0
           imagePullPolicy: Always
           name: nexus
           ports:
