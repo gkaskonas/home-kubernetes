@@ -11,5 +11,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      # CHANGE ME
-      storage: 1Gi
+      storage: 10Gi

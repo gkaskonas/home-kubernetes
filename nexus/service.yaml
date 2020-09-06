@@ -6,13 +6,13 @@ metadata:
   namespace: nexus
 spec:
   ports:
-  - port: 80
-    targetPort: 8081
-    protocol: TCP
-    name: http
-  - port: 5000
-    targetPort: 5000
-    protocol: TCP
-    name: docker 
+    - port: 80
+      targetPort: 8081
+      protocol: TCP
+      name: http
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
+      name: docker
   selector:
     app: nexus

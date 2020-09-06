@@ -15,15 +15,15 @@ spec:
         app: nexus
     spec:
       containers:
-      - image: sonatype/nexus3:3.22.1
-        imagePullPolicy: Always
-        name: nexus
-        ports:
-        - containerPort: 8081
-        - containerPort: 5000
-        volumeMounts:
-          - mountPath: /nexus-data
-            name: nexus-data-volume
+        - image: sonatype/nexus3:3.22.1
+          imagePullPolicy: Always
+          name: nexus
+          ports:
+            - containerPort: 8081
+            - containerPort: 5000
+          volumeMounts:
+            - mountPath: /nexus-data
+              name: nexus-data-volume
       volumes:
         - name: nexus-data-volume
           persistentVolumeClaim:
