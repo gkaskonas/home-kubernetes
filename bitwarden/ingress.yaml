@@ -1,0 +1,28 @@
+---
+# Source: bitwarden-k8s/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bitwarden-bitwarden-k8s
+  labels:
+    app.kubernetes.io/name: bitwarden-k8s
+    helm.sh/chart: bitwarden-k8s-0.1.3
+    app.kubernetes.io/instance: bitwarden
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - hosts:
+        - "bitwarden.DOMAIN_TEMPLATE"
+      secretName: bitwarden-domain-com-tls
+  rules:
+    - host: "bitwarden.DOMAIN_TEMPLATE"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: bitwarden-bitwarden-k8s
+              servicePort: http

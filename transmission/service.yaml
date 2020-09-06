@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-transmission-openvpn
+  labels:
+    app: transmission-openvpn
+    chart: transmission-openvpn-0.1.0
+    release: transmission
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 9091
+      protocol: TCP
+      name: http
+  selector:
+    app: transmission-openvpn
+    release: transmission

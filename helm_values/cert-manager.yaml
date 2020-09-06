@@ -1,7 +1,0 @@
-image:
-  tag: 0.16.0
-webhook:
-  image:
-    tag: 0.16.0
-  caSyncImage:
-    tag: 0.16.0

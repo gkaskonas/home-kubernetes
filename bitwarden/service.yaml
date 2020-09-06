@@ -1,0 +1,21 @@
+---
+# Source: bitwarden-k8s/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitwarden-bitwarden-k8s
+  labels:
+    app.kubernetes.io/name: bitwarden-k8s
+    helm.sh/chart: bitwarden-k8s-0.1.3
+    app.kubernetes.io/instance: bitwarden
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: bitwarden-k8s
+    app.kubernetes.io/instance: bitwarden

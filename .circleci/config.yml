@@ -6,9 +6,9 @@ jobs:
     working_directory: /tmp/workspace/kubernetes
     steps:
       - checkout
-      # - run:
-      #     name: Validate cert-manager manifests
-      #     command: kubeval -d /tmp/workspace/kubernetes/cert-manager/
+      - run:
+          name: Validate cert-manager manifests
+          command: kubeval -d /tmp/workspace/kubernetes/cert-manager/
       - run:
           name: Validate emby manifests
           command: kubeval -d /tmp/workspace/kubernetes/emby/
@@ -21,6 +21,24 @@ jobs:
       - run:
           name: Validate nextcloud manifests
           command: kubeval -d /tmp/workspace/kubernetes/nextcloud/
+      - run:
+          name: Validate redis manifests
+          command: kubeval -d /tmp/workspace/kubernetes/redis/
+      - run:
+          name: Validate mariadb manifests
+          command: kubeval -d /tmp/workspace/kubernetes/mariadb/
+      - run:
+          name: Validate metallb manifests
+          command: kubeval -d /tmp/workspace/kubernetes/metallb/
+      - run:
+          name: Validate nginx-ingress manifests
+          command: kubeval -d /tmp/workspace/kubernetes/nginx-ingress/
+      - run:
+          name: Validate transmission manifests
+          command: kubeval -d /tmp/workspace/kubernetes/transmission/
+      - run:
+          name: Validate bitwarden manifests
+          command: kubeval -d /tmp/workspace/kubernetes/bitwarden/
   deploy-kubernetes:
     docker:
       - image: devth/helm:latest
@@ -60,13 +78,11 @@ jobs:
             kubectl apply -f nexus/namespace.yaml -n nexus
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' nexus/ingress.yaml
             kubectl apply -f nexus/ -n nexus
-      # - run:
-      #     name: install cert-manager
-      #     command: |
-      #       kubectl apply -f cert-manager/namespace.yaml
-      #       kubectl apply -f cert-manager/
-      #       helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --values helm_values/cert-manager.yaml
-      #       sleep 10s
+      - run:
+          name: install cert-manager
+          command: |
+            kubectl apply -f cert-manager/namespace.yaml
+            kubectl apply -f cert-manager/
       - run:
           name: install nextcloud
           command: |
@@ -87,38 +103,35 @@ jobs:
           name: install mysql
           command: |
             sed -i 's/MYSQL_ROOT_PASSWORD/'$MYSQL_ROOT_PASSWORD'/g' mariadb/mysql.yaml
-            kubectl apply -f redis/
+            kubectl apply -f mariadb/
             sleep 10s
       - run:
           name: install kubernetes-dashboard
           command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' kubernetes-dashboard/ingress.yaml
             kubectl apply -f kubernetes-dashboard/ -n kubernetes-dashboard
-      # - run:
-      #     name: install transmission
-      #     command: |
-      #       sed -i 's/NORDVPN_PASSWORD/'$NORDVPN_PASSWORD'/g' transmission/nordvpn-creds.yaml
-      #       sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' transmission/ingress.yaml
-      #       kubectl apply -f transmission/namespace.yaml
-      #       kubectl apply -f transmission/ -n transmission
-      #       helm upgrade transmission bananaspliff/transmission-openvpn --values helm_values/transmission-openvpn.values.yaml --namespace transmission --install
-      #       sleep 10s
+      - run:
+          name: install transmission
+          command: |
+            sed -i 's/NORDVPN_PASSWORD/'$NORDVPN_PASSWORD'/g' transmission/nordvpn-creds.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' transmission/ingress.yaml
+            kubectl apply -f transmission/namespace.yaml
+            kubectl apply -f transmission/ -n transmission
+            sleep 10s
       - run:
           name: install emby
           command: |
             kubectl apply -f emby/namespace.yaml -n emby
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' emby/ingress.yaml
             kubectl apply -f emby/ -n emby
-      # - run:
-      #     name: install bitwarden
-      #     command: |
-      #       git clone https://github.com/gjeanmart/bitwarden-k8s.git bitwarden/bitwarden-k8s
-      #       sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$BITWARDEN_ADMIN_PASSWORD'/g' helm_values/bitwarden.values.yaml
-      #       sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' helm_values/bitwarden.values.yaml
-      #       kubectl apply -f bitwarden/namespace.yaml
-      #       kubectl apply -f bitwarden/volumes.yaml
-      #       helm upgrade bitwarden ./bitwarden/bitwarden-k8s --values helm_values/bitwarden.values.yaml --namespace bitwarden --install
-      #       sleep 10s
+      - run:
+          name: install bitwarden
+          command: |
+            sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$BITWARDEN_ADMIN_PASSWORD'/g' bitwarden/deployment.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' bitwarden/ingress.yaml
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' bitwarden/deployment.yaml
+            kubectl apply -f bitwarden/namespace.yaml
+            kubectl apply -f bitwarden/ -n bitwarden
       # - run:
       #     name: install rocketchat
       #     command: |

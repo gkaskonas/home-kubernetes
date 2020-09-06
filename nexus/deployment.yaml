@@ -6,6 +6,8 @@ metadata:
   namespace: nexus
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: nexus
@@ -15,7 +17,7 @@ spec:
         app: nexus
     spec:
       containers:
-        - image: sonatype/nexus3:3.22.1
+        - image: klo2k/nexus3:3.26.1-02
           imagePullPolicy: Always
           name: nexus
           ports:
@@ -24,6 +26,24 @@ spec:
           volumeMounts:
             - mountPath: /nexus-data
               name: nexus-data-volume
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 30
       volumes:
         - name: nexus-data-volume
           persistentVolumeClaim:
