@@ -81,12 +81,3 @@ spec:
         resources:
           requests:
             storage: 10Gi
----
-apiVersion: v1
-data:
-  ROOT_PASSWORD: SQL_ROOT_PASSWORD
-kind: Secret
-metadata:
-  name: mysql-root-password
-  namespace: mysql
-type: Opaque
