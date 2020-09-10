@@ -27,7 +27,7 @@ spec:
             - -v
             command:
             - php
-            image: nextcloud:19.0.2
+            image: nextcloud:19.0.3
             imagePullPolicy: IfNotPresent
             name: nextcloud
             securityContext:
