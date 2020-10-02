@@ -3,7 +3,7 @@ controller:
   image:
     registry: eu.gcr.io
     repository: k8s-artifacts-prod/ingress-nginx/controller
-    tag: "v0.35.0"
+    tag: "v0.40.1"
 defaultBackend:
   enabled: false
 extraArgs:
