@@ -6,7 +6,7 @@ metadata:
   name: nextcloud
   namespace: nextcloud
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: Recreate
   selector:
@@ -66,37 +66,13 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /status.php
-              port: http
-              httpHeaders:
-                - name: Host
-                  value: "nextcloud.toastedbuns.co.uk"
-            initialDelaySeconds: 15
-            periodSeconds: 30
-            timeoutSeconds: 15
-            successThreshold: 1
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /status.php
-              port: http
-              httpHeaders:
-                - name: Host
-                  value: "nextcloud.toastedbuns.co.uk"
-            initialDelaySeconds: 15
-            periodSeconds: 30
-            timeoutSeconds: 15
-            successThreshold: 1
-            failureThreshold: 3
           resources:
             limits:
               cpu: "2"
-              memory: 4096Mi
+              memory: 2048Mi
             requests:
               cpu: "1"
-              memory: 2048Mi
+              memory: 1024Mi
           volumeMounts:
             - name: nextcloud-data
               mountPath: /var/www/
