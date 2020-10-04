@@ -119,6 +119,12 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' emby/ingress.yaml
             kubectl apply -f emby/ -n emby
       - run:
+          name: install jellyfin
+          command: |
+            kubectl apply -f jellyfin/namespace.yaml -n jellyfin
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' jellyfin/ingress.yaml
+            kubectl apply -f jellyfin/ -n jellyfin
+      - run:
           name: install bitwarden
           command: |
             sed -i 's/BITWARDEN_ADMIN_PASSWORD/'$BITWARDEN_ADMIN_PASSWORD'/g' bitwarden/deployment.yaml

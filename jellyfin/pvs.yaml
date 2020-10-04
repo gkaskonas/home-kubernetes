@@ -9,11 +9,11 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 20Gi
+    storage: 50Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Music"
+    path: "/mnt/hdd2/Music"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -29,7 +29,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Shows"
+    path: "/mnt/hdd2/Shows"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -45,28 +45,29 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Movies"
+    path: "/mnt/hdd2/Movies"
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   namespace: jellyfin
-  name: config
+  name: jellyfin-config
   labels:
     type: local
 spec:
+  storageClassName: manual
   capacity:
     storage: 20Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/jellyfin-config"
+    path: "/mnt/hdd2/jellyfin-config"
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   namespace: jellyfin
-  name: audiobooks
+  name: jellyfin-audiobooks
   labels:
     type: local
 spec:
@@ -76,36 +77,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/hdd1/Audiobooks"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  namespace: jellyfin
-  name: new-shows
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 500Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/hdd2/Shows"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  namespace: jellyfin
-  name: new-movies
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 500Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/hdd2/Movies"
+    path: "/mnt/hdd2/Audiobooks"

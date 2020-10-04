@@ -10,7 +10,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 50Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -42,7 +42,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: jellyfin
-  name: config
+  name: jellyfin-config
 spec:
   storageClassName: manual
   accessModes:
@@ -55,7 +55,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: jellyfin
-  name: audiobooks
+  name: jellyfin-audiobooks
 spec:
   storageClassName: manual
   accessModes:
@@ -63,29 +63,3 @@ spec:
   resources:
     requests:
       storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: jellyfin
-  name: new-shows
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: jellyfin
-  name: new-movies
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Gi

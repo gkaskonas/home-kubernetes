@@ -8,7 +8,7 @@ metadata:
 spec:
   strategy:
     type: Recreate
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: jellyfin
@@ -23,25 +23,19 @@ spec:
             claimName: jellyfin-music
         - name: jellyfin-config
           persistentVolumeClaim:
-            claimName: config
-        # - name: jellyfin-shows
-        #   persistentVolumeClaim:
-        #     claimName: jellyfin-shows
-        # - name: jellyfin-movies
-        #   persistentVolumeClaim:
-        #     claimName: jellyfin-movies
-        # - name: jellyfin-audiobooks
-        #   persistentVolumeClaim:
-        #     claimName: audiobooks
-        # - name: jellyfin-new-movies
-        #   persistentVolumeClaim:
-        #     claimName: new-movies
-        # - name: jellyfin-new-shows
-        #   persistentVolumeClaim:
-        #     claimName: new-shows
+            claimName: jellyfin-config
+        - name: jellyfin-shows
+          persistentVolumeClaim:
+            claimName: jellyfin-shows
+        - name: jellyfin-movies
+          persistentVolumeClaim:
+            claimName: jellyfin-movies
+        - name: jellyfin-audiobooks
+          persistentVolumeClaim:
+            claimName: jellyfin-audiobooks
       containers:
         - name: jellyfin
-          image: docker.io/jellyfin/jellyfin
+          image: docker.io/jellyfin/jellyfin:10.6.4
           imagePullPolicy: Always
           env:
             - name: UID
@@ -84,13 +78,16 @@ spec:
               mountPath: "/config"
             - name: jellyfin-music
               mountPath: "/music"
-            # - name: jellyfin-shows
-            #   mountPath: "/shows"
-            # - name: jellyfin-movies
-            #   mountPath: "/movies"
-            # - name: jellyfin-audiobooks
-            #   mountPath: "/audiobooks"
-            # - name: jellyfin-new-movies
-            #   mountPath: "/new_movies"
-            # - name: jellyfin-new-shows
-            #   mountPath: "/new_shows"
+            - name: jellyfin-shows
+              mountPath: "/shows"
+            - name: jellyfin-movies
+              mountPath: "/movies"
+            - name: jellyfin-audiobooks
+              mountPath: "/audiobooks"
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 0.5
+            limits:
+              memory: 3Gi
+              cpu: 1.5

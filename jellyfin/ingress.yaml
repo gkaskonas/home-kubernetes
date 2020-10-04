@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - jellyfin.toastedbuns.co.uk
+        - jellyfin.DOMAIN_TEMPLATE
       secretName: jellyfin-prod-tls
   rules:
-    - host: jellyfin.toastedbuns.co.uk
+    - host: jellyfin.DOMAIN_TEMPLATE
       http:
         paths:
           - path: /
