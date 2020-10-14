@@ -132,6 +132,12 @@ jobs:
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' bitwarden/deployment.yaml
             kubectl apply -f bitwarden/namespace.yaml
             kubectl apply -f bitwarden/ -n bitwarden
+      - run:
+          name: install pihole
+          command: |
+            sed -i 's/PIHOLE_ADMIN_PASSWORD/'$PIHOLE_ADMIN_PASSWORD'/g' pihole/secret.yaml
+            kubectl apply -f pihole/namespace.yaml
+            kubectl apply -f pihole/ -n pihole
 workflows:
   version: 2.1
   validate:

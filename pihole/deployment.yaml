@@ -1,0 +1,118 @@
+---
+# Source: pihole/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+    chart: pihole-1.7.17
+    release: pihole
+    heritage: Helm
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: pihole
+      release: pihole
+  template:
+    metadata:
+      annotations:
+        checksum.config.adlists: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546
+        checksum.config.blacklist: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546
+        checksum.config.regex: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546
+        checksum.config.whitelist: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546
+        checksum.config.dnsmasqConfig: 6f15ed40e78a23713fcb5fe8ef458bf13903cc49ca82ff43124fa0f6cf72f19
+      labels:
+        app: pihole
+        release: pihole
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+        - 127.0.0.1
+        - 8.8.8.8
+      hostNetwork: true
+      containers:
+        - name: pihole
+          env:
+          - name: 'WEB_PORT'
+            value: "55080"
+          - name: VIRTUAL_HOST
+            value: pi.hole
+          - name: WEBPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: pihole-secret
+          - name: "ServerIP"
+            value: "192.168.0.243"
+          - name: "TZ"
+            value: "Europe/London"
+          - name: 'DNS1'
+            value: 8.8.8.8
+          - name: 'DNS2'
+            value: 8.8.4.4
+          image: "pihole/pihole:v5.1.2"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          ports:
+          - containerPort: 55080
+            name: http
+            protocol: TCP
+          - containerPort: 53
+            name: dns
+            protocol: TCP
+          - containerPort: 53
+            name: dns-udp
+            protocol: UDP
+          - containerPort:  443
+            name: https
+            protocol: TCP
+          - containerPort: 67
+            name: client-udp
+            protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /admin.index.php
+              port: http
+            initialDelaySeconds: 60
+            failureThreshold: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /admin.index.php
+              port: http
+            initialDelaySeconds: 60
+            failureThreshold: 3
+            timeoutSeconds: 5
+          volumeMounts:
+          - mountPath: /etc/pihole
+            name: config
+          - mountPath: /etc/dnsmasq.d/02-custom.conf
+            name: custom-dnsmasq
+            subPath: 02-custom.conf
+          - mountPath: /etc/addn-hosts
+            name: custom-dnsmasq
+            subPath: addn-hosts
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: pihole
+      - configMap:
+          defaultMode: 420
+          name: pihole-custom-dnsmasq
+        name: custom-dnsmasq
