@@ -68,16 +68,11 @@ spec:
               cpu: 200m
               memory: 512Mi
       volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mysql-data
         - name: conf
           emptyDir: {}
         - name: config-map
           configMap:
             name: mysql
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 10Gi

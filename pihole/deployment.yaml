@@ -37,12 +37,19 @@ spec:
         nameservers:
         - 127.0.0.1
         - 8.8.8.8
-      hostNetwork: true
+      hostNetwork: false
+      nodeSelector:
+        cpu: slow
+      tolerations:
+      - key: "key"
+        operator: "Equal"
+        value: "value"
+        effect: "NoSchedule"
       containers:
         - name: pihole
           env:
           - name: 'WEB_PORT'
-            value: "55080"
+            value: "80"
           - name: VIRTUAL_HOST
             value: pi.hole
           - name: WEBPASSWORD
@@ -50,10 +57,6 @@ spec:
               secretKeyRef:
                 key: password
                 name: pihole-secret
-          - name: "ServerIP"
-            value: "192.168.0.243"
-          - name: "TZ"
-            value: "Europe/London"
           - name: 'DNS1'
             value: 8.8.8.8
           - name: 'DNS2'
@@ -61,9 +64,9 @@ spec:
           image: "pihole/pihole:v5.1.2"
           imagePullPolicy: IfNotPresent
           securityContext:
-            privileged: true
+            privileged: false
           ports:
-          - containerPort: 55080
+          - containerPort: 80
             name: http
             protocol: TCP
           - containerPort: 53
@@ -102,12 +105,7 @@ spec:
             name: custom-dnsmasq
             subPath: addn-hosts
           resources:
-            limits:
-              cpu: 500m
-              memory: 512Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
+            {}
       volumes:
       - name: config
         persistentVolumeClaim:
