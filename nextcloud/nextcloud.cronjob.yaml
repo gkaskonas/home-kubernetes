@@ -24,10 +24,9 @@ spec:
           - args:
             - -f 
             - /var/www/html/cron.php
-            - -v
             command:
             - php
-            image: nextcloud:19.0.3
+            image: "nextcloud:20.0.0"
             imagePullPolicy: IfNotPresent
             name: nextcloud
             securityContext:
@@ -76,5 +75,85 @@ spec:
             persistentVolumeClaim:
               claimName: nextcloud-cron
   schedule: '*/15 * * * *'
+  successfulJobsHistoryLimit: 1
+  suspend: false
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: nextcloud-cron
+  namespace: nextcloud
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: nextcloud
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: nextcloud
+        spec:
+          containers:
+          - args:
+            - -f 
+            - /var/www/html/occ preview:pre-generate
+            command:
+            - php
+            image: "nextcloud:20.0.0"
+            imagePullPolicy: IfNotPresent
+            name: nextcloud
+            securityContext:
+              runAsUser: 33
+              runAsGroup: 33
+              # fsGroup: 33
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+            - mountPath: /var/www/
+              name: nextcloud-data
+              subPath: root
+            - mountPath: /var/www/html
+              name: nextcloud-data
+              subPath: html
+            - mountPath: /var/www/html/data
+              name: nextcloud-data
+              subPath: data
+            - mountPath: /var/www/html/config
+              name: nextcloud-data
+              subPath: config
+            - mountPath: /var/www/html/custom_apps
+              name: nextcloud-data
+              subPath: custom_apps
+            - mountPath: /var/www/tmp
+              name: nextcloud-data
+              subPath: tmp
+            - mountPath: /var/www/html/themes
+              name: nextcloud-data
+              subPath: themes
+          dnsPolicy: ClusterFirst
+          restartPolicy: Never
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            fsGroup: 33
+          terminationGracePeriodSeconds: 30
+          volumes:
+          - name: nextcloud-data
+            persistentVolumeClaim:
+              claimName: nextcloud-cron
+  schedule: '*/30 * * * *'
   successfulJobsHistoryLimit: 1
   suspend: false
