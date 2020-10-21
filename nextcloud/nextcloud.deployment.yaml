@@ -27,6 +27,10 @@ spec:
           env:
             - name: MYSQL_HOST
               value: "mysql.mysql.svc.cluster.local:3306"
+            - name: OVERWRITEHOST
+              value: nextcloud.toastedbuns.co.uk
+            - name: OVERWRITEPROTOCOL
+              value: https
             - name: MYSQL_DATABASE
               value: "nextcloud"
             - name: MYSQL_USER
