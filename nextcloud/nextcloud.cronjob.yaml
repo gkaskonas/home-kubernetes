@@ -81,7 +81,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: nextcloud-cron
+  name: nextcloud-cron-images
   namespace: nextcloud
 spec:
   concurrencyPolicy: Forbid
@@ -103,7 +103,8 @@ spec:
           containers:
           - args:
             - -f 
-            - /var/www/html/occ preview:pre-generate
+            - /var/www/html/occ
+            - preview:pre-generate
             command:
             - php
             image: "nextcloud:20.0.2"
