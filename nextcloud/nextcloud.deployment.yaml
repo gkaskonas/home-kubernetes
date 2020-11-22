@@ -8,7 +8,7 @@ metadata:
 spec:
   replicas: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: nextcloud
@@ -20,6 +20,16 @@ spec:
         app.kubernetes.io/instance: nextcloud
         nextcloud-redis-client: "true"
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                - nextcloud
+            topologyKey: kubernetes.io/hostname
       containers:
         - name: nextcloud
           image: "nextcloud:20.0.2"
@@ -70,13 +80,6 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          resources:
-            limits:
-              cpu: "2"
-              memory: 2048Mi
-            requests:
-              cpu: "1"
-              memory: 1024Mi
           volumeMounts:
             - name: nextcloud-data
               mountPath: /var/www/
