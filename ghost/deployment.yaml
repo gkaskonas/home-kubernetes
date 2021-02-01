@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: blog
-        image: ghost:3.29.1-alpine
+        image: ghost:3.41.3-alpine
         imagePullPolicy: Always
         ports:
         - containerPort: 2368
