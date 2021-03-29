@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: bitwardenrs/server
-  tag: 1.19.0
+  tag: 1.20.0
   pullPolicy: IfNotPresent
 
 env:
