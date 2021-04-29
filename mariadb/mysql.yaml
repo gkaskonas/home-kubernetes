@@ -22,7 +22,7 @@ spec:
     spec:
       initContainers:
         - name: init-mysql
-          image: mariadb:10.5.5
+          image: mariadb:10.6.0
           command:
             - bash
             - "-c"
@@ -47,7 +47,7 @@ spec:
               mountPath: /mnt/config-map
       containers:
         - name: mysql
-          image: mariadb:10.5.5
+          image: mariadb:10.6.0
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
