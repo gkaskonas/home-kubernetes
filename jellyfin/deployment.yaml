@@ -35,7 +35,7 @@ spec:
             claimName: jellyfin-audiobooks
       containers:
         - name: jellyfin
-          image: docker.io/jellyfin/jellyfin:10.7.1
+          image: docker.io/jellyfin/jellyfin:10.7.5
           imagePullPolicy: Always
           env:
             - name: UID
