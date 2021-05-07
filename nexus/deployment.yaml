@@ -17,7 +17,7 @@ spec:
         app: nexus
     spec:
       containers:
-        - image: klo2k/nexus3:3.26.1-02
+        - image: klo2k/nexus3:3.29.2-02
           imagePullPolicy: Always
           name: nexus
           ports:
