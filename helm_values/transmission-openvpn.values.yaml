@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: "haugene/transmission-openvpn"
-  tag: "2.12-armhf" # Suffixed by -armhf to pull the ARM image
+  tag: "3.0-armhf" # Suffixed by -armhf to pull the ARM image
   pullPolicy: "IfNotPresent"
 
 env:

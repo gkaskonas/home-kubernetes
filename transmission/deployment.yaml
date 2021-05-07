@@ -36,7 +36,7 @@ spec:
       securityContext: {}
       containers:
         - name: transmission-openvpn
-          image: "haugene/transmission-openvpn:2.13-armhf"
+          image: "haugene/transmission-openvpn:3.0-armhf"
           imagePullPolicy: IfNotPresent
           env:
             - name: OPENVPN_PROVIDER
