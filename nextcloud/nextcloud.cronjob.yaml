@@ -26,7 +26,7 @@ spec:
             - /var/www/html/cron.php
             command:
             - php
-            image: "nextcloud:21.0.1"
+            image: "nextcloud:21.0.2"
             imagePullPolicy: IfNotPresent
             name: nextcloud
             securityContext:
@@ -107,7 +107,7 @@ spec:
             - preview:pre-generate
             command:
             - php
-            image: "nextcloud:21.0.1"
+            image: "nextcloud:21.0.2"
             imagePullPolicy: IfNotPresent
             name: nextcloud
             securityContext:
