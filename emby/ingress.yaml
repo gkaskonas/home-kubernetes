@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - emby.DOMAIN_TEMPLATE
+    - tv.DOMAIN_TEMPLATE
     secretName: emby-prod-tls
   rules:
-    - host: emby.DOMAIN_TEMPLATE
+    - host: tv.DOMAIN_TEMPLATE
       http:
         paths:
           - path: /

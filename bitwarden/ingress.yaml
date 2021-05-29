@@ -16,10 +16,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - "bitwarden.DOMAIN_TEMPLATE"
+        - "passwords.DOMAIN_TEMPLATE"
       secretName: bitwarden-domain-com-tls
   rules:
-    - host: "bitwarden.DOMAIN_TEMPLATE"
+    - host: "passwords.DOMAIN_TEMPLATE"
       http:
         paths:
           - path: /

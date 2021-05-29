@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "transmission.DOMAIN_TEMPLATE" # Host to access transmission
+    - "download.DOMAIN_TEMPLATE" # Host to access transmission
     secretName: "transmission-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
   rules:
-  - host: "transmission.DOMAIN_TEMPLATE" # Host to access transmission
+  - host: "download.DOMAIN_TEMPLATE" # Host to access transmission
     http:
       paths:
         - path: /  # We will access transmission via the URL https://transmission.DOMAIN_TEMPLATE/

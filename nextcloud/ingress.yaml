@@ -35,10 +35,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "nextcloud.DOMAIN_TEMPLATE" # Host to access nextcloud
+    - "cloud.DOMAIN_TEMPLATE" # Host to access nextcloud
     secretName: "nextcloud-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
   rules:
-  - host: "nextcloud.DOMAIN_TEMPLATE" # Host to access nextcloud
+  - host: "cloud.DOMAIN_TEMPLATE" # Host to access nextcloud
     http:
       paths:
         - path: / 
