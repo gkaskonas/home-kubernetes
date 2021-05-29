@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "blog.DOMAIN_TEMPLATE" # Host to access ghost
+    - "DOMAIN_TEMPLATE" # Host to access ghost
     secretName: "ghost-prod-tls" # Name of the certifciate (see kubectl get certificate -A)
   rules:
-  - host: "blog.DOMAIN_TEMPLATE" # Host to access ghost
+  - host: "DOMAIN_TEMPLATE" # Host to access ghost
     http:
       paths:
         - path: / 

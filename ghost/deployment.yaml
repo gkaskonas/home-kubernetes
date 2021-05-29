@@ -5,6 +5,7 @@ metadata:
   name: blog
   labels:
     app: blog
+  namespace: ghost
 spec:
   replicas: 1
   selector:
@@ -17,13 +18,13 @@ spec:
     spec:
       containers:
       - name: blog
-        image: ghost:3.29.1-alpine
+        image: ghost:4.6.4-alpine
         imagePullPolicy: Always
         ports:
         - containerPort: 2368
         env:
         - name: url
-          value: https://blog.DOMAIN_TEMPLATE
+          value: https://DOMAIN_TEMPLATE
         volumeMounts:
         - mountPath: /var/lib/ghost/content
           name: content

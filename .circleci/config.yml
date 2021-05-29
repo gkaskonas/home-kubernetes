@@ -138,6 +138,12 @@ jobs:
             sed -i 's/PIHOLE_ADMIN_PASSWORD/'$PIHOLE_ADMIN_PASSWORD'/g' pihole/secret.yaml
             kubectl apply -f pihole/namespace.yaml
             kubectl apply -f pihole/ -n pihole
+      - run:
+          name: install ghost
+          command: |
+            sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/ingress.yaml
+            kubectl apply -f ghost/namespace.yaml
+            kubectl apply -f ghost/ -n pihole
 workflows:
   version: 2.1
   validate:
