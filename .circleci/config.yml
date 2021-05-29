@@ -143,7 +143,7 @@ jobs:
           command: |
             sed -i 's/DOMAIN_TEMPLATE/'$DOMAIN'/g' ghost/ingress.yaml
             kubectl apply -f ghost/namespace.yaml
-            kubectl apply -f ghost/ -n pihole
+            kubectl apply -f ghost/ -n ghost
 workflows:
   version: 2.1
   validate:
