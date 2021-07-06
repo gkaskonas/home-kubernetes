@@ -8,7 +8,7 @@ spec:
   - args:
     - upgrade
     command: ['sh', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
-    image: nextcloud:21.0.2
+    image: nextcloud:22.0.0
     imagePullPolicy: IfNotPresent
     name: nextcloud
     securityContext:
