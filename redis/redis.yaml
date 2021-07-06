@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: master
-          image: redis:6.2.1
+          image: redis:6.2.4
           resources:
             requests:
               cpu: 100m
